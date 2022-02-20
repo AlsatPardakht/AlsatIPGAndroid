@@ -8,3 +8,114 @@ plugins {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext.projectArtifactId = { project ->
+    if (project.name == 'AlsatIPGAndroid') {
+        return 'alsatipgandroid'
+    } else {
+        return null
+    }
+}
+
+allprojects {
+    group = 'com.alsatpardakht'
+    version = '1.0.0'
+    project.ext.artifactId = rootProject.ext.projectArtifactId(project)
+}
+
+subprojects { project ->
+    if (project.ext.artifactId == null) return
+
+    apply plugin: 'com.android.library'
+    apply plugin: 'maven-publish'
+    apply plugin: 'signing'
+
+    task javadoc(type: Javadoc) {
+        failOnError false
+        source = android.sourceSets.main.java.srcDirs
+    }
+
+    task sourcesJar(type: Jar) {
+        from android.sourceSets.main.java.srcDirs
+        classifier = 'sources'
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+
+    publishing {
+        publications {
+            aar(MavenPublication) {
+                groupId project.group
+                artifactId project.ext.artifactId
+                version project.version
+
+                pom {
+                    name = project.ext.artifactId
+                    description = 'AlsatIPGCore is an open-source Android library to connect Alsat pardakht peyment API'
+                    url = 'https://github.com/AlsatPardakht/AlsatIPGAndroid'
+                    inceptionYear = '2022'
+
+                    scm {
+                        url = 'scm:git@github.com:AlsatPardakht/AlsatIPGAndroid.git'
+                        connection = 'scm:git@github.com:AlsatPardakht/AlsatIPGAndroid.git'
+                        developerConnection = 'scm:git@github.com:AlsatPardakht/AlsatIPGAndroid.git'
+                    }
+
+                    licenses {
+                        license {
+                            name = 'MIT License'
+                            url = 'http://www.opensource.org/licenses/mit-license.php'
+                        }
+                    }
+
+                    organization {
+                        name = 'Alsat pardakht'
+                        url = 'https://alsatpardakht.com'
+                    }
+
+                    developers {
+                        developer {
+                            id = 'erfanmhat'
+                            name = 'erfan mahdavi athar'
+                            email = 'erfan.mh.at@gmail.com'
+                        }
+                    }
+                }
+
+                pom.withXml {
+                    def dependenciesNode = asNode().appendNode('dependencies')
+                    project.configurations.api.allDependencies.each { dependency ->
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', dependency.group)
+                        dependencyNode.appendNode('artifactId', dependency.name)
+                        dependencyNode.appendNode('version', dependency.version)
+                    }
+                }
+
+                afterEvaluate {
+                    artifact "$buildDir/outputs/aar/$project.name-release.aar"
+                    artifact sourcesJar
+                    artifact javadocJar
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                name = "OSSRH"
+                url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+                credentials {
+                    username = project.rootProject.properties["ossrhUsername"]
+                    password = project.rootProject.properties["ossrhPassword"]
+                }
+            }
+        }
+    }
+
+    signing {
+        sign publishing.publications.aar
+    }
+}

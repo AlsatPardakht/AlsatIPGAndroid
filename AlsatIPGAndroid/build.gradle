@@ -44,5 +44,6 @@ dependencies {
     implementation "io.ktor:ktor-client-serialization:$ktor_version"
     implementation "io.ktor:ktor-client-logging:$ktor_version"
 
-    implementation project(":AlsatIPGCore")
+//    implementation project(":AlsatIPGCore")
+    implementation "com.alsatpardakht:alsatipgcore:1.0.0"
 }

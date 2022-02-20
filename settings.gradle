@@ -16,5 +16,5 @@ rootProject.name = "AlsatIPGAndroidLib"
 include ':app'
 include ':AlsatIPGAndroid'
 
-include ":AlsatIPGCore"
-project(':AlsatIPGCore').projectDir = new File('../AlsatIPGCoreLib/AlsatIPGCore')
+//include ":AlsatIPGCore"
+//project(':AlsatIPGCore').projectDir = new File('../AlsatIPGCoreLib/AlsatIPGCore')
