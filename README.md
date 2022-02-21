@@ -31,9 +31,9 @@
 
 ## 🧐 درباره <a name = "about"></a>
 <p dir="rtl">
-این کتابخانه برای آسان سازی ارتباط با api های سرویس IPG مستقیم آل سات پرداخت است و لیست تمامی api ها در لینک زیر موجود هستند  :
+این کتابخانه برای آسان سازی ارتباط با api های سرویس IPG آل سات پرداخت است و لیست تمامی api ها در لینک زیر موجود هستند  :
 </p>
-<a href="https://www.alsatpardakht.com/TechnicalDocumentation/191">🌐 مستندات فنی IPG های مستقیم آل سات پرداخت</a><br>
+<a href="https://www.alsatpardakht.com/TechnicalDocumentation/191">🌐 مستندات فنی IPG های آل سات پرداخت</a><br>
 
 ## 🎈 نحوه استفاده <a name="usage"></a>
 
@@ -71,15 +71,50 @@
 
 </div>
 
+<details open>
+    <summary>Gradle Groovy DSL</summary>
+
 ```gradle
 dependencies {
 
     ...
 
-    implementation 'com.github.erfanmhat:AlsatIPGAndroid:1.1'
+    implementation 'com.alsatpardakht:alsatipgcore:1.0.0'
+    implementation 'com.alsatpardakht:alsatipgandroid:1.0.0'
 
 }
 ```
+
+</details>
+
+<details>
+    <summary>Gradle Kotlin DSL</summary>
+
+```Kotlin
+implementation("com.alsatpardakht:alsatipgcore:1.0.0")
+implementation("com.alsatpardakht:alsatipgandroid:1.0.0")
+```
+
+</details>
+
+<details>
+    <summary>Apache Maven</summary>
+
+```XML
+<dependency>
+  <groupId>com.alsatpardakht</groupId>
+  <artifactId>alsatipgcore</artifactId>
+  <version>1.0.0</version>
+</dependency>
+
+<dependency>
+  <groupId>com.alsatpardakht</groupId>
+  <artifactId>alsatipgandroid</artifactId>
+  <version>1.0.0</version>
+</dependency>
+```
+
+</details>
 
 <div dir="rtl">
 
