@@ -35,14 +35,6 @@
 </p>
 <a href="https://www.alsatpardakht.com/TechnicalDocumentation/191">🌐 مستندات فنی IPG های آل سات پرداخت</a><br>
 
-## 🎈 نحوه استفاده <a name="usage"></a>
-
-دو نمونه از نحوه استفاده از این کتابخانه در لینک های زیر موجود است :
-
-- <a href="https://www.github.com/AlsatPardakht/AlsatIPGAndroidKotlinExample">نمونه استفاده از این کتابخانه در Kotlin</a><br>
-- <a href="https://www.github.com/AlsatPardakht/AlsatIPGAndroidJavaExample">نمونه استفاده از این کتابخانه در Java</a>
-
-
 ## 🏁 شروع به کار <a name = "getting_started"></a>
 
 برای شروع کافی است مراحل زیر را با دقت  روی پروژه خود انجام بدهید .
@@ -117,6 +109,13 @@ implementation("com.alsatpardakht:alsatipgandroid:1.0.0")
 </details>
 
 <div dir="rtl">
+
+## 🎈 نحوه استفاده <a name="usage"></a>
+
+دو نمونه از نحوه استفاده از این کتابخانه در لینک های زیر موجود است :
+
+- <a href="https://www.github.com/AlsatPardakht/AlsatIPGAndroidKotlinExample">نمونه استفاده از این کتابخانه در Kotlin</a><br>
+- <a href="https://www.github.com/AlsatPardakht/AlsatIPGAndroidJavaExample">نمونه استفاده از این کتابخانه در Java</a>
 
 ## ⛏️ ساخته شده با استفاده از  <a name = "built_using"></a>
 
