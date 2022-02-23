@@ -25,10 +25,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class AlsatIPG private constructor() {
+class AlsatIPG private constructor(private val httpLogging: Boolean) {
 
     private val httpClient = HttpClient(CIO) {
-        install(Logging) {
+        if (httpLogging) install(Logging) {
             logger = Logger.DEFAULT
             level = LogLevel.ALL
         }
@@ -54,8 +54,8 @@ class AlsatIPG private constructor() {
 
         @JvmStatic
         @Synchronized
-        fun getInstance(): AlsatIPG {
-            return instance ?: AlsatIPG().also {
+        fun getInstance(httpLogging: Boolean = false): AlsatIPG {
+            return instance ?: AlsatIPG(httpLogging).also {
                 instance = it
             }
         }
