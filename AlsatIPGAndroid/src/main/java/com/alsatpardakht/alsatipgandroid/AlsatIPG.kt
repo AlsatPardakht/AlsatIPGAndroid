@@ -3,6 +3,7 @@ package com.alsatpardakht.alsatipgandroid
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.alsatpardakht.alsatipgandroid.util.asFlow
 import com.alsatpardakht.alsatipgcore.core.util.Resource
 import com.alsatpardakht.alsatipgcore.data.remote.IPGServiceImpl
 import com.alsatpardakht.alsatipgcore.data.remote.util.URLConstant.GO_ROUTE
@@ -20,10 +21,8 @@ import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.features.logging.*
 import io.ktor.client.features.logging.Logger
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 
 class AlsatIPG private constructor(private val httpLogging: Boolean) {
 
@@ -43,10 +42,14 @@ class AlsatIPG private constructor(private val httpLogging: Boolean) {
 
     private val _paymentSignStatus: MutableLiveData<PaymentSignResult> = MutableLiveData()
     val paymentSignStatus: LiveData<PaymentSignResult> = _paymentSignStatus
+    @ExperimentalCoroutinesApi
+    val paymentSignStatusAsFlow = paymentSignStatus.asFlow()
 
     private val _paymentValidationStatus: MutableLiveData<PaymentValidationResult> =
         MutableLiveData()
     val paymentValidationStatus: LiveData<PaymentValidationResult> = _paymentValidationStatus
+    @ExperimentalCoroutinesApi
+    val paymentValidationStatusAsFlow = paymentValidationStatus.asFlow()
 
     companion object {
         @Volatile
