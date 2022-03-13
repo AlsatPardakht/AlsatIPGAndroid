@@ -5,11 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.alsatpardakht.alsatipgandroid.util.asFlow
 import com.alsatpardakht.alsatipgcore.core.util.Resource
+import com.alsatpardakht.alsatipgcore.core.util.decodeQueryParameter
 import com.alsatpardakht.alsatipgcore.data.remote.IPGServiceImpl
+import com.alsatpardakht.alsatipgcore.domain.model.TashimModel
+import com.alsatpardakht.alsatipgcore.domain.model.PaymentType
 import com.alsatpardakht.alsatipgcore.data.remote.util.URLConstant.GO_ROUTE
 import com.alsatpardakht.alsatipgcore.data.remote.util.appendQuery
-import com.alsatpardakht.alsatipgcore.data.remote.model.PaymentSignRequest
-import com.alsatpardakht.alsatipgcore.data.remote.model.PaymentValidationRequest
 import com.alsatpardakht.alsatipgcore.data.repository.IPGRepositoryImpl
 import com.alsatpardakht.alsatipgcore.domain.model.PaymentSignResult
 import com.alsatpardakht.alsatipgcore.domain.model.PaymentValidationResult
@@ -42,12 +43,14 @@ class AlsatIPG private constructor(private val httpLogging: Boolean) {
 
     private val _paymentSignStatus: MutableLiveData<PaymentSignResult> = MutableLiveData()
     val paymentSignStatus: LiveData<PaymentSignResult> = _paymentSignStatus
+
     @ExperimentalCoroutinesApi
     val paymentSignStatusAsFlow = paymentSignStatus.asFlow()
 
     private val _paymentValidationStatus: MutableLiveData<PaymentValidationResult> =
         MutableLiveData()
     val paymentValidationStatus: LiveData<PaymentValidationResult> = _paymentValidationStatus
+
     @ExperimentalCoroutinesApi
     val paymentValidationStatusAsFlow = paymentValidationStatus.asFlow()
 
@@ -64,14 +67,28 @@ class AlsatIPG private constructor(private val httpLogging: Boolean) {
         }
     }
 
-    fun sign(paymentSignRequest: PaymentSignRequest): LiveData<PaymentSignResult> {
+    private fun sign(
+        Amount: Long,
+        Api: String,
+        RedirectAddress: String,
+        InvoiceNumber: String = "",
+        Type: PaymentType,
+        Tashim: List<TashimModel>
+    ): LiveData<PaymentSignResult> {
         CoroutineScope(Dispatchers.Main).launch {
-            paymentSignUseCase.execute(paymentSignRequest).collect {
+            paymentSignUseCase.execute(
+                Amount = Amount,
+                Api = Api,
+                InvoiceNumber = InvoiceNumber,
+                RedirectAddress = RedirectAddress,
+                Type = Type,
+                Tashim = Tashim
+            ).collect {
                 when (it) {
                     is Resource.Success -> _paymentSignStatus.postValue(
                         PaymentSignResult(
                             isSuccessful = true,
-                            url = GO_ROUTE.appendQuery("Token", it.data.Token ?: "")
+                            url = GO_ROUTE.appendQuery("Token", it.data.Token)
                         )
                     )
                     is Resource.Loading -> _paymentSignStatus.postValue(PaymentSignResult(isLoading = true))
@@ -82,21 +99,67 @@ class AlsatIPG private constructor(private val httpLogging: Boolean) {
         return paymentSignStatus
     }
 
-    fun validation(Api: String, data: Uri): LiveData<PaymentValidationResult> {
-        val paymentValidationRequest = PaymentValidationRequest(Api)
+    fun signMostaghim(
+        Api: String,
+        Amount: Long,
+        InvoiceNumber: String,
+        RedirectAddress: String
+    ) = sign(
+        Api = Api,
+        Amount = Amount,
+        InvoiceNumber = InvoiceNumber,
+        RedirectAddress = RedirectAddress,
+        Type = PaymentType.Mostaghim,
+        Tashim = emptyList()
+    )
+
+    fun signVaset(
+        Api: String,
+        Amount: Long,
+        RedirectAddress: String,
+        Tashim: List<TashimModel>,
+        InvoiceNumber: String = "",
+    ) = sign(
+        Api = Api,
+        Amount = Amount,
+        InvoiceNumber = InvoiceNumber,
+        RedirectAddress = RedirectAddress,
+        Type = PaymentType.Vaset,
+        Tashim = Tashim
+    )
+
+    private fun validation(
+        Api: String,
+        data: Uri,
+        Type: PaymentType
+    ): LiveData<PaymentValidationResult> {
+        var tref: String? = ""
+        var iD: String? = ""
+        var iN: String? = ""
+        var PayId: String? = ""
         for (key in data.queryParameterNames) {
-            val value = data.getQueryParameter(key)
+            val value = data.getQueryParameter(key)?.decodeQueryParameter()
             when (key) {
-                "tref" -> paymentValidationRequest.tref = value
-                "iD" -> paymentValidationRequest.iD = value
-                "iN" -> paymentValidationRequest.iN = value
+                "tref" -> tref = value
+                "iD" -> iD = value
+                "iN" -> iN = value
+                "PayId" -> PayId = value
             }
         }
         CoroutineScope(Dispatchers.Main).launch {
-            paymentValidationUseCase.execute(paymentValidationRequest).collect {
+            paymentValidationUseCase.execute(
+                tref = tref,
+                iD = iD,
+                iN = iN,
+                Api = Api,
+                Type = Type
+            ).collect {
                 when (it) {
                     is Resource.Success -> _paymentValidationStatus.postValue(
-                        PaymentValidationResult(isSuccessful = true, data = it.data)
+                        PaymentValidationResult(
+                            isSuccessful = true,
+                            data = it.data.copy(PayId = PayId)
+                        )
                     )
                     is Resource.Loading -> _paymentValidationStatus.postValue(
                         PaymentValidationResult(isLoading = true)
@@ -109,4 +172,16 @@ class AlsatIPG private constructor(private val httpLogging: Boolean) {
         }
         return paymentValidationStatus
     }
+
+    fun validationMostaghim(Api: String, data: Uri) = validation(
+        Api = Api,
+        data = data,
+        Type = PaymentType.Mostaghim
+    )
+
+    fun validationVaset(Api: String, data: Uri) = validation(
+        Api = Api,
+        data = data,
+        Type = PaymentType.Vaset
+    )
 }

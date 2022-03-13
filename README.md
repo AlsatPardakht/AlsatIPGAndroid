@@ -71,8 +71,8 @@ dependencies {
 
     ...
 
-    implementation 'com.alsatpardakht:alsatipgcore:1.0.0'
-    implementation 'com.alsatpardakht:alsatipgandroid:1.0.0'
+    implementation 'com.alsatpardakht:alsatipgcore:1.2.1'
+    implementation 'com.alsatpardakht:alsatipgandroid:1.2.1'
 
 }
 ```
@@ -83,8 +83,8 @@ dependencies {
     <summary>Gradle Kotlin DSL</summary>
 
 ```Kotlin
-implementation("com.alsatpardakht:alsatipgcore:1.0.0")
-implementation("com.alsatpardakht:alsatipgandroid:1.0.0")
+implementation("com.alsatpardakht:alsatipgcore:1.2.1")
+implementation("com.alsatpardakht:alsatipgandroid:1.2.1")
 ```
 
 </details>
@@ -96,13 +96,13 @@ implementation("com.alsatpardakht:alsatipgandroid:1.0.0")
 <dependency>
   <groupId>com.alsatpardakht</groupId>
   <artifactId>alsatipgcore</artifactId>
-  <version>1.0.0</version>
+  <version>1.2.1</version>
 </dependency>
 
 <dependency>
   <groupId>com.alsatpardakht</groupId>
   <artifactId>alsatipgandroid</artifactId>
-  <version>1.0.0</version>
+  <version>1.2.1</version>
 </dependency>
 ```
 
@@ -123,5 +123,5 @@ implementation("com.alsatpardakht:alsatipgandroid:1.0.0")
 
 - [Kotlin](https://kotlinlang.org/) - programming language
 - [Ktor](https://ktor.io/) - HTTP client
-- [Coroutines](https://expressjs.com/) - asynchronous & concurrency
-- [kotlinx-serialization-json](https://vuejs.org/) - serialization & deserialization
+- [Coroutines](https://kotlinlang.org/docs/coroutines-overview.html) - asynchronous & concurrency
+- [kotlinx-serialization-json](https://github.com/Kotlin/kotlinx.serialization) - serialization & deserialization
