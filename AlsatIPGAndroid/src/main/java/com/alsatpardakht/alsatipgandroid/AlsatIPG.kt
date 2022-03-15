@@ -4,8 +4,8 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.alsatpardakht.alsatipgandroid.util.asFlow
+import com.alsatpardakht.alsatipgandroid.util.getDecodedQueryValueByKey
 import com.alsatpardakht.alsatipgcore.core.util.Resource
-import com.alsatpardakht.alsatipgcore.core.util.decodeQueryParameter
 import com.alsatpardakht.alsatipgcore.data.remote.IPGServiceImpl
 import com.alsatpardakht.alsatipgcore.domain.model.TashimModel
 import com.alsatpardakht.alsatipgcore.domain.model.PaymentType
@@ -75,7 +75,7 @@ class AlsatIPG private constructor(private val httpLogging: Boolean) {
         Type: PaymentType,
         Tashim: List<TashimModel>
     ): LiveData<PaymentSignResult> {
-        CoroutineScope(Dispatchers.Main).launch {
+        CoroutineScope(Dispatchers.Default).launch {
             paymentSignUseCase.execute(
                 Amount = Amount,
                 Api = Api,
@@ -130,23 +130,13 @@ class AlsatIPG private constructor(private val httpLogging: Boolean) {
 
     private fun validation(
         Api: String,
-        data: Uri,
-        Type: PaymentType
+        tref: String,
+        iD: String,
+        iN: String,
+        Type: PaymentType,
+        PayId: String
     ): LiveData<PaymentValidationResult> {
-        var tref: String? = ""
-        var iD: String? = ""
-        var iN: String? = ""
-        var PayId: String? = ""
-        for (key in data.queryParameterNames) {
-            val value = data.getQueryParameter(key)?.decodeQueryParameter()
-            when (key) {
-                "tref" -> tref = value
-                "iD" -> iD = value
-                "iN" -> iN = value
-                "PayId" -> PayId = value
-            }
-        }
-        CoroutineScope(Dispatchers.Main).launch {
+        CoroutineScope(Dispatchers.Default).launch {
             paymentValidationUseCase.execute(
                 tref = tref,
                 iD = iD,
@@ -173,15 +163,49 @@ class AlsatIPG private constructor(private val httpLogging: Boolean) {
         return paymentValidationStatus
     }
 
+    private fun validation(
+        Api: String,
+        data: Uri,
+        Type: PaymentType
+    ) = validation(
+        Api = Api,
+        tref = data.getDecodedQueryValueByKey("tref"),
+        iN = data.getDecodedQueryValueByKey("iN"),
+        iD = data.getDecodedQueryValueByKey("iD"),
+        Type = Type,
+        PayId = data.getDecodedQueryValueByKey("PayId")
+    )
+
+
     fun validationMostaghim(Api: String, data: Uri) = validation(
         Api = Api,
         data = data,
         Type = PaymentType.Mostaghim
     )
 
+    fun validationMostaghim(Api: String, tref: String, iN: String, iD: String, PayId: String) =
+        validation(
+            Api = Api,
+            tref = tref,
+            iN = iN,
+            iD = iD,
+            Type = PaymentType.Mostaghim,
+            PayId = PayId
+        )
+
     fun validationVaset(Api: String, data: Uri) = validation(
         Api = Api,
         data = data,
         Type = PaymentType.Vaset
     )
+
+    fun validationVaset(Api: String, tref: String, iN: String, iD: String, PayId: String) =
+        validation(
+            Api = Api,
+            tref = tref,
+            iN = iN,
+            iD = iD,
+            Type = PaymentType.Vaset,
+            PayId = PayId
+        )
 }

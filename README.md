@@ -72,7 +72,7 @@ dependencies {
     ...
 
     implementation 'com.alsatpardakht:alsatipgcore:1.2.2'
-    implementation 'com.alsatpardakht:alsatipgandroid:1.2.2'
+    implementation 'com.alsatpardakht:alsatipgandroid:1.2.4'
 
 }
 ```
@@ -84,7 +84,7 @@ dependencies {
 
 ```Kotlin
 implementation("com.alsatpardakht:alsatipgcore:1.2.2")
-implementation("com.alsatpardakht:alsatipgandroid:1.2.2")
+implementation("com.alsatpardakht:alsatipgandroid:1.2.4")
 ```
 
 </details>
@@ -102,7 +102,7 @@ implementation("com.alsatpardakht:alsatipgandroid:1.2.2")
 <dependency>
   <groupId>com.alsatpardakht</groupId>
   <artifactId>alsatipgandroid</artifactId>
-  <version>1.2.2</version>
+  <version>1.2.4</version>
 </dependency>
 ```
 

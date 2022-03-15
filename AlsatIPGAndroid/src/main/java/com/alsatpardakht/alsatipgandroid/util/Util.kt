@@ -1,7 +1,9 @@
 package com.alsatpardakht.alsatipgandroid.util
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import com.alsatpardakht.alsatipgcore.core.util.decodeQueryParameter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
@@ -21,3 +23,12 @@ fun <T> LiveData<T>.asFlow() = callbackFlow {
         removeObserver(observer)
     }
 }.flowOn(Dispatchers.Main.immediate).onlyNotNull()
+
+fun Uri.getDecodedQueryValueByKey(inputKey: String): String {
+    for (key in this.queryParameterNames) {
+        if (key == inputKey) {
+            return this.getQueryParameter(key)?.decodeQueryParameter() ?: ""
+        }
+    }
+    return ""
+}

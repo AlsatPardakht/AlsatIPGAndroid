@@ -10,8 +10,8 @@ android {
         applicationId "com.alsatpardakht.alsatipgandroidlib"
         minSdk 21
         targetSdk 32
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.2.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -43,5 +43,5 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
     implementation project(":AlsatIPGAndroid")
-    implementation "com.alsatpardakht:alsatipgcore:1.0.0"
+    implementation "com.alsatpardakht:alsatipgcore:1.2.2"
 }
