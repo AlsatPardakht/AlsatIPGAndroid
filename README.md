@@ -71,8 +71,8 @@ dependencies {
 
     ...
 
-    implementation 'com.alsatpardakht:alsatipgcore:1.2.2'
-    implementation 'com.alsatpardakht:alsatipgandroid:1.2.4'
+    implementation 'com.alsatpardakht:alsatipgcore:1.2.3'
+    implementation 'com.alsatpardakht:alsatipgandroid:1.2.5'
 
 }
 ```
@@ -83,8 +83,8 @@ dependencies {
     <summary>Gradle Kotlin DSL</summary>
 
 ```Kotlin
-implementation("com.alsatpardakht:alsatipgcore:1.2.2")
-implementation("com.alsatpardakht:alsatipgandroid:1.2.4")
+implementation("com.alsatpardakht:alsatipgcore:1.2.3")
+implementation("com.alsatpardakht:alsatipgandroid:1.2.5")
 ```
 
 </details>
@@ -96,13 +96,13 @@ implementation("com.alsatpardakht:alsatipgandroid:1.2.4")
 <dependency>
   <groupId>com.alsatpardakht</groupId>
   <artifactId>alsatipgcore</artifactId>
-  <version>1.2.2</version>
+  <version>1.2.3</version>
 </dependency>
 
 <dependency>
   <groupId>com.alsatpardakht</groupId>
   <artifactId>alsatipgandroid</artifactId>
-  <version>1.2.4</version>
+  <version>1.2.5</version>
 </dependency>
 ```
 

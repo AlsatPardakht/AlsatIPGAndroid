@@ -183,15 +183,27 @@ class AlsatIPG private constructor(private val httpLogging: Boolean) {
         Type = PaymentType.Mostaghim
     )
 
-    fun validationMostaghim(Api: String, tref: String, iN: String, iD: String, PayId: String) =
-        validation(
-            Api = Api,
-            tref = tref,
-            iN = iN,
-            iD = iD,
-            Type = PaymentType.Mostaghim,
-            PayId = PayId
-        )
+    fun validationMostaghim(
+        Api: String, tref: String, iN: String, iD: String
+    ) = validation(
+        Api = Api,
+        tref = tref,
+        iN = iN,
+        iD = iD,
+        Type = PaymentType.Mostaghim,
+        PayId = ""
+    )
+
+    fun validationMostaghim(
+        Api: String, tref: String, iN: String, iD: String, PayId: String
+    ) = validation(
+        Api = Api,
+        tref = tref,
+        iN = iN,
+        iD = iD,
+        Type = PaymentType.Mostaghim,
+        PayId = PayId
+    )
 
     fun validationVaset(Api: String, data: Uri) = validation(
         Api = Api,
@@ -199,13 +211,25 @@ class AlsatIPG private constructor(private val httpLogging: Boolean) {
         Type = PaymentType.Vaset
     )
 
-    fun validationVaset(Api: String, tref: String, iN: String, iD: String, PayId: String) =
-        validation(
-            Api = Api,
-            tref = tref,
-            iN = iN,
-            iD = iD,
-            Type = PaymentType.Vaset,
-            PayId = PayId
-        )
+    fun validationVaset(
+        Api: String, tref: String, iN: String, iD: String
+    ) = validation(
+        Api = Api,
+        tref = tref,
+        iN = iN,
+        iD = iD,
+        Type = PaymentType.Vaset,
+        PayId = ""
+    )
+
+    fun validationVaset(
+        Api: String, tref: String, iN: String, iD: String, PayId: String
+    ) = validation(
+        Api = Api,
+        tref = tref,
+        iN = iN,
+        iD = iD,
+        Type = PaymentType.Vaset,
+        PayId = PayId
+    )
 }

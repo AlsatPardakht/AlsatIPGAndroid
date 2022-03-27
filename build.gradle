@@ -19,7 +19,7 @@ ext.projectArtifactId = { project ->
 
 allprojects {
     group = 'com.alsatpardakht'
-    version = '1.2.4'
+    version = '1.2.5'
     project.ext.artifactId = rootProject.ext.projectArtifactId(project)
 }
 
